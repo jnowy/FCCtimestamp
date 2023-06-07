@@ -26,7 +26,12 @@ app.get("/api/hello", function (req, res) {
 //The date API endpoint
 app.get("/api/:date?", function(req, res) {
   let date = req.params.date;
-  res.json({date: date});
+  try {
+    const dateObject = new Date(date);
+    res.json({date: dateObject.toString()});
+  } catch (err) {
+    res.json({date: "Invalid Date"});
+  }
 });
 
 
