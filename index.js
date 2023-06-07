@@ -26,28 +26,31 @@ app.get("/api/hello", function (req, res) {
 //The date API endpoint
 app.get("/api/:date?", function(req, res) {
   let date = req.params.date;
+  const dateObject = new Date();
 
   if (date == null) {
-    const dateObject = new Date();
     res.json({unix: dateObject.getTime() ,utc: dateObject.toUTCString()});
     return;
   }
 
-  if(!(date.includes("-"))) {
-    try {
+  if(!(date.includes("-") || date.includes(","))) {
+      console.log("Parse int started");
       let dateInt = parseInt(date);
+      if(isNaN(dateInt)) {
+        res.json({error: "Invalid Date"});
+        return;
+      }
       const dateObject = new Date(dateInt);
       res.json({unix: dateObject.getTime() ,utc: dateObject.toUTCString()});
-    } catch (err) {
-      res.json({error: "Invalid Date"});
-    }
+      return;
   } else {
-        try {
       const dateObject = new Date(date);
+      if(dateObject.toDateString() === "Invalid Date") {
+        res.json({error: "Invalid Date"});
+        return;
+      }
       res.json({unix: dateObject.getTime() ,utc: dateObject.toUTCString()});
-    } catch (err) {
-      res.json({error: "Invalid Date"});
-    }
+      return;
   }
 });
 
