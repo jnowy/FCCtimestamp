@@ -26,6 +26,11 @@ app.get("/api/hello", function (req, res) {
 //The date API endpoint
 app.get("/api/:date?", function(req, res) {
   let date = req.params.date;
+  if (date == null) {
+    const dateObject = new Date();
+    res.json({unix: dateObject.getTime() ,utc: dateObject.toUTCString()});
+    return;
+  }
   try {
     const dateObject = new Date(date);
     res.json({unix: dateObject.getTime() ,utc: dateObject.toUTCString()});
