@@ -33,8 +33,7 @@ app.get("/api/:date?", function(req, res) {
     return;
   }
 
-  if(!(date.includes("-") || date.includes(","))) {
-      console.log("Parse int started");
+  if(!(date.includes("-") || date.includes(",") || date.includes(" ")) {
       let dateInt = parseInt(date);
       if(isNaN(dateInt)) {
         res.json({error: "Invalid Date"});
